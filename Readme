@@ -1,0 +1,101 @@
+                                          ,---.-,      
+                                   ,--,  '   ,'  '.  
+      ,----,     ,----..         ,--.'| /   /      \ 
+    .'   .' \   /   /   \     ,--,  | :.   ;  ,/.  : 
+  ,----,'    | /   .     : ,---.'|  : ''   |  | :  ; 
+  |    :  .  ;.   /   ;.  \;   : |  | ;'   |  ./   : 
+  ;    |.'  /.   ;   /  ` ;|   | : _' ||   :       , 
+  `----'/  ; ;   |  ; \ ; |:   : |.'  | \   \     /  
+    /  ;  /  |   :  | ; | '|   ' '  ; :  ;   ,   '\  
+   ;  /  /-, .   |  ' ' ' :\   \  .'. | /   /      \ 
+  /  /  /.`| '   ;  \; /  | `---`:  | '.   ;  ,/.  : 
+./__;      :  \   \  ',  /       '  ; |'   |  | :  ; 
+|   :    .'    ;   :    /        |  : ;'   |  ./   : 
+;   | .'        \   \ .'         '  ,/ |   :      /  
+`---'            `---`           '--'   \   \   .'   
+                                         `---`-'    
+
+Pentru realizarea jocului am lucrat cu libraria ncurses si am utilizat doua
+ferestre pentru meniu si pentru tabela de joc. Pentru rularea jocului, terminalul
+trebuie configurat pentru 256 de culori. Fiecare fereastra este incadrata intr-un
+panel pentru a realiza trecerea de la meniu la tabla de joc. Cand se apeleaza functia
+pentru meniu, panel-ul pentru tabela de joc este ascunda, iar cel pentru meniu este
+afisata. Pentru functia new_game, se inverseaza cele doua panel-uri. 
+==================================================================================
+Cerinta 1
+Pentru realizarea meniului am creat o fereastra in care am afisat o ilustratie grafica
+cu un logo al jocului. Meniul are 3 optiuni: New Game, Resume si Quit. Pentru realizarea
+acestuia am creat o matrice de siruri de caractere pe care le-am afisat in fereastra.
+Pentru parcurgerea meniului se folosesc sagetile si tasta ENTER pentru alegerea unei
+optiuni. Atunci cand se apasa sagetile, coordonatele se schimba si in functie de acestea
+se alege optiunea. Afisarea optiunii pe care se afla cursorul este ilustrata printr-un
+highlight pe scris. La alegerea optiunii New Game, se face trecerea de la fereastra
+meniului la cea a tabelei de joc. Panel-ul pentru meniu este ascuns si cel pentru 
+joc este afisat. Optiunea Resume este accesibila doar dupa ce s-a ales macar odata 
+optiunea New Game iar jocul nu a fost castigat sau pierdut. Trecerea se face la fel
+ca si in cazul unui joc nou, de la o fereastra la alta. Iesire din joc se realizeaza
+prin alegerea optiunii Quit. 
+==================================================================================
+Cerinta 2
+Tabela de joc este alcatuita din 16 casute ce vor contine numere, avand o culoare
+specifica pentru fiecare numar (2,4,8...). La inceputul jocului, sunt afisate casute
+goale corespunzatoare elementelor din matrice egale cu 0 si doua casute afisate random
+cu valoare 2 sau 4. De asemenea, tabela de joc contine legenda mutarilor valabile si
+a optiunilor (mutari W,A,S,D; R-restart, U-undo, X-automove, Q-quit to menu), afisarea
+in timp real a datei si orei, un cronometru cu secundele ramase pana la mutarea automata,
+numarul total de mutari si ultima mutare realizata. Pentru afisarea celulor am realizat
+o functie separata care primeste ca parametrii pozitia in matrice a elementului si
+valoarea acestuia iar in functie de acestea afiseaza pe ecran o casuta corespunzatoare.
+==================================================================================
+Cerinta 3
+Pentru realizarea cerintei 3 am creat mai multe functii in care am lucrat cu matricea
+asociata jocului. Pentru fiecare mutare (stanga, dreapta, sus, jos) am creat doua 
+functii principale: una de mutare si una de validare a mutarii. In functia de mutare,
+prima data am realizat alipirea elementelor pe linii sau coloane si dupa le-am mutat
+ocupand toate pozitiile nule pana la intalnirea marginei tabelei sau a unui element
+nenul. Dupa realizarea mutarii, daca aceasta era valida (numarul de deplasari sau alipiri
+este diferit de zero), se genereaza un element nou cu valoare 2 sau 4. Pentru mutari
+si alte optiuni, am folosit o structura switch in interiorul unei structuri while.
+In cadrul structurii se verifica daca se apasa o tasta. In caz afirmativ, se retine
+tasta si se executa instructiunile corespunzatoare. Instructiunea while este parcursa
+odata la 0,5 secunde iar in cadrul acesteia au loc, pe langa mutari, actualizarea
+timpului si reactualizarea ferestrei de joc. La fiecare mutare, in cadrul functiei 
+de miscare, este actualizat si scorul. Daca nu se apasa nici o tasta, doar se 
+actualizeaza timpul.
+==================================================================================
+Cerinta 4
+Pentru mutarea automata, am realizat o functie in care am declarat 4 matrici noi,
+corespunzatoare celor 4 mutari posibile. Am apelat functia de mutare pentru fiecare caz,
+urmata de apelarea functiei pentru calcularea numarului de elemente nule din matrice
+si intr-o variabila am retinut valoare 1, 2, 3 sau 4 in functie de mutarea care genereaza 
+cele mai multe casute libere. Mutarea automata am introdus-o in structura 
+switch care realizeaza anumite instructiuni in functie de tasta apasata. Pentru mutarea 
+automata se poate folosi tasta X. De asemenea, daca nu se apasa nici o tasta timp de 5 sec
+(10 parcurgeri ale instructiunii while), se realizeaza o mutare automata
+respectand algoritmul unei mutari obisnuite in functie de valoare variabilei k,
+returnata de functia pentru mutare automata.
+==================================================================================
+Cerinta 5
+Pentru realizarea cerintei 5 am construit o functie care afiseaza in tabela de joc
+un mesaj corespunzator, precum si optiunile ramase valide (N-new game, Q-quit to menu.
+Aceasta functie foloseste tot fereastra jocului. De aceasta data, tastele pentru 
+mutari, undo, restart, automove nu mai functioneaza. Dupa fiecare mutare, se 
+verifica daca toate mutarile sunt invadile. In caz afirmativ, este apelata functia
+de pierdut care afiseaza si face cele decrise mai sus. Cu acelasi algoritm am realizat
+si functia pentru castigat, singurele diferente constand in faptul ca, se afiseaza
+alt mesaj iar pentru apelarea acestei functii, dupa fiecare mutare se verifica daca 
+un element al matricei este egal cu 2048.
+==================================================================================
+BONUSURI
+Ca bonusuri am folosit culori pentru fiecare casuta in functie de valoarea continuta.
+Am implementat jocului functie de undo si restart, am afisat ora si data in timp 
+real, am realizat un cronometru live cu culori pentru afisarea timpului ramas pana
+la mutarea automata. De asemenea, am afisat numarul total de mutari si ultima mutare
+realizata.
+
+
+
+
+
+
+
